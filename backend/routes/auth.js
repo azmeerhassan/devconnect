@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const requireAuth = require('../middleware/authMiddleware');
 
 // Register Route
 router.post('/register', async (req, res) => {
@@ -56,5 +57,8 @@ router.post('/login', async (req, res) => {
   }
 });
 
+router.get('/me', requireAuth, (req, res) => {
+  res.json({ message: 'Protected data access granted!', userId: req.user });
+});
 
 module.exports = router;
